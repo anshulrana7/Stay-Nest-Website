@@ -49,11 +49,15 @@ app.get("/listings/:id",async(req,res)=>{
 });
 
 //CREATE ROUTE
-app.post("/listings" ,async(req, res)=>{
+app.post("/listings" ,async(req, res,next)=>{
     // 1st way-- let{title, description, image, price,country, loaction} = req.body;
+    try{
     const newListings = new Listing(req.body.listing);
     await newListings.save();
     res.redirect("/listings");
+    } catch(err){
+        next(err);
+    }
 });
 
 // EDIT ROUTE
@@ -93,6 +97,10 @@ app.delete("/listings/:id" ,async (req, res)=>{
 //   console.log("Sample was saved");
 //   res.send("succesfull testing");
 // });
+
+app.use((err, req, res, next) =>{
+    res.send("Something went wrong");
+});
 
 app.listen(8080, ()=>{
     console.log("Server is listening to port 8080");
