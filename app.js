@@ -19,6 +19,9 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
+const bookingRoutes = require("./routes/booking");
+
+
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
@@ -80,6 +83,13 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser()); 
 
+
+app.use((req, res, next) => {
+  res.locals.currUser = req.user;
+  next();
+});
+
+
 app.use((req, res,next) =>{
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
@@ -95,7 +105,7 @@ app.use((req, res,next) =>{
 //     let registerdUser = await User.register(fakerUser,"helloword");
 //         res.send(registerdUser);
 // })
-
+app.use("/", bookingRoutes);
 app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews",reviewRouter);
 app.use("/", userRouter)

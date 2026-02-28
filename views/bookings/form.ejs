@@ -1,0 +1,57 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="booking-wrapper d-flex justify-content-center align-items-center mt-5">
+
+  <div class="card p-4 shadow" style="max-width:500px; width:100%; border-radius:15px;">
+
+    <h3 class="text-center mb-3">Book <%= listing.title %></h3>
+
+    <form action="/book/<%= listing._id %>" method="POST">
+
+      <div class="mb-3">
+        <label class="form-label">Check In</label>
+       <input type="date" name="checkIn" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Check Out</label>
+<input type="date" name="checkOut" class="form-control" required>
+      </div>
+
+      <h5 class="text-success text-center mb-3">
+        ₹ <%= listing.price %> / night
+      </h5>
+
+      <button class="btn btn-success w-100">
+        Confirm Booking
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const disableDates = bookedRanges.flatMap(range => {
+  return [{
+    from: range.checkIn,
+    to: range.checkOut
+  }];
+});
+
+flatpickr("#checkIn", {
+  minDate: "today",
+  disable: disableDates,
+  dateFormat: "Y-m-d"
+});
+
+flatpickr("#checkOut", {
+  minDate: "today",
+  disable: disableDates,
+  dateFormat: "Y-m-d"
+});
+
+</script>

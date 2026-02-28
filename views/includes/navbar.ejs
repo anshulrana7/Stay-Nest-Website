@@ -49,9 +49,17 @@
         <a class="nav-link" href="/login"><b>Log in</b></a>
         <% } %>
         <% if(currUser){ %>
-        <a class="nav-link" href="/logout"><b>Log out</b></a>
-        <% } %>
+
+  <!-- ⭐ ADD THIS LINE -->
+  <a class="nav-link" href="/bookings/my">
+    <i class="fa-solid fa-calendar-check"></i> My Bookings
+  </a>
+
+  <a class="nav-link" href="/logout"><b>Log out</b></a>
+
+<% } %>
       </div>
     </div>
   </div>
+  
 </nav>
