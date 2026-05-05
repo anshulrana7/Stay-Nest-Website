@@ -11,7 +11,12 @@ module.exports.renderBookingForm = async (req, res) => {
     return res.redirect("/listings");
   }
 
-  res.render("bookings/form", { listing });
+  // ✅ FETCH ALREADY BOOKED DATES
+  const bookedRanges = await Booking.find({ property: listing._id })
+    .select("checkIn checkOut");
+
+  // ✅ SEND TO FRONTEND
+  res.render("bookings/form", { listing, bookedRanges });
 };
 
 
@@ -35,6 +40,15 @@ module.exports.createBooking = async (req, res) => {
 
   const start = new Date(checkIn);
   const end = new Date(checkOut);
+
+// 🛑 PAST DATE CHECK (IMPORTANT)
+const today = new Date();
+today.setHours(0, 0, 0, 0); // normalize to midnight
+
+if (start < today || end < today) {
+  req.flash("error", "Cannot book past dates");
+  return res.redirect("back");
+}
 
   // 🛑 INVALID DATE CHECK
   if (isNaN(start.getTime()) || isNaN(end.getTime())) {

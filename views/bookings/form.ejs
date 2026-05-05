@@ -10,12 +10,12 @@
 
       <div class="mb-3">
         <label class="form-label">Check In</label>
-       <input type="date" name="checkIn" class="form-control" required>
+        <input type="text" id="checkIn" name="checkIn" class="form-control" required>
       </div>
 
       <div class="mb-3">
         <label class="form-label">Check Out</label>
-<input type="date" name="checkOut" class="form-control" required>
+        <input type="text" id="checkOut" name="checkOut" class="form-control" required>
       </div>
 
       <h5 class="text-success text-center mb-3">
@@ -32,26 +32,27 @@
 
 </div>
 
-
 <script>
+document.addEventListener("DOMContentLoaded", function () {
 
-const disableDates = bookedRanges.flatMap(range => {
-  return [{
-    from: range.checkIn,
-    to: range.checkOut
-  }];
+  const disableDates = (typeof bookedRanges !== "undefined")
+    ? bookedRanges.map(range => ({
+        from: range.checkIn,
+        to: range.checkOut
+      }))
+    : [];
+
+  flatpickr("#checkIn", {
+    minDate: "today",
+    disable: disableDates,
+    dateFormat: "Y-m-d"
+  });
+
+  flatpickr("#checkOut", {
+    minDate: "today",
+    disable: disableDates,
+    dateFormat: "Y-m-d"
+  });
+
 });
-
-flatpickr("#checkIn", {
-  minDate: "today",
-  disable: disableDates,
-  dateFormat: "Y-m-d"
-});
-
-flatpickr("#checkOut", {
-  minDate: "today",
-  disable: disableDates,
-  dateFormat: "Y-m-d"
-});
-
 </script>
