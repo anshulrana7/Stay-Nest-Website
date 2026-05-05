@@ -27,12 +27,14 @@
                 <%= listing.country %>
             </p>
         </div>
-
-        <br />
-
+        </div>
         <!-- <form method="GET" action="/listings">
         <button style="width: 150px; height: 35px;" class="btn btn-dark add-btn mb-3 offset-2">Back to Listings</button>
     </form> -->
+    <div class="col-6 offset-3 ">
+        <a href="/book/<%= listing._id %>" class="btn btn-success px-4">
+            Book Now
+        </a>
     </div>
     <% if (currUser && currUser._id.equals(listing.owner._id)) { %>
     <div class="btns">
@@ -45,14 +47,10 @@
         </form>
     </div>
 
-
-
-    
     <% } %>
     <div class="col-8 offset-3 mb-3">
-        
         <% if (currUser) { %>
-            <hr />
+        <hr />
         <h4>Leave a Review</h4>
         <form action="/listings/<%= listing._id %>/reviews"
             method="POST" novalidate class="needs-validation">
@@ -91,13 +89,9 @@
             <button class="btn btn-outline-dark">Submit</button>
         </form>
         <hr />
-
-
-
         
         <% } %>
-
-        <% if(listing.reviews.length >0) {%>
+        <% if (listing.reviews.length > 0) { %>
         <div class="row">
             <p><b>All Reviews</b></p>
             <% for (let review of listing.reviews) { %>
@@ -120,13 +114,6 @@
                 </div>
             </div>
 
-
-            <a href="/book/<%= listing._id %>" class="btn btn-success">
-  Book Now
-</a>
-
-
-            
             <% } %>
         </div>
         <% } %>

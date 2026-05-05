@@ -1,50 +1,87 @@
+// // const mongoose = require("mongoose");
+// // const initData = require("./data.js");
+// // const Listing = require("../models/listing.js");
+// // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+
+// // main().then(() =>{
+// //     console.log("Connected to db");
+// // }).catch((err)=>{
+// //     console.log(err);
+// // });
+
+// // async function main(params) { 
+// //     await mongoose.connect(MONGO_URL);
+// // }
+
+// // const initDB = async()=>{
+// //     await Listing.deleteMany({});
+// //     await Listing.insertMany(initData.data);
+// //     console.log("Data was initialized");
+// // }
+
+// // initDB();
+
+
 // const mongoose = require("mongoose");
 // const initData = require("./data.js");
 // const Listing = require("../models/listing.js");
+
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
-// main().then(() =>{
-//     console.log("Connected to db");
-// }).catch((err)=>{
+// main()
+//   .then(() => {
+//     console.log("Connected to DB");
+//   })
+//   .catch((err) => {
 //     console.log(err);
-// });
+//   });
 
-// async function main(params) { 
-//     await mongoose.connect(MONGO_URL);
+// async function main() {
+//   await mongoose.connect(MONGO_URL); 
 // }
 
-// const initDB = async()=>{
-//     await Listing.deleteMany({});
-//     await Listing.insertMany(initData.data);
-//     console.log("Data was initialized");
-// }
+// const initDB = async () => {
+//   await Listing.deleteMany({});  
+//   initData.data=initData.data.map((obj) =>({...obj, owner: "697b755942d8e883c322594a"}));
+//   await Listing.insertMany(initData.data);
+//   console.log("Data was initialized");
+// };
 
 // initDB();
 
+
+require("dotenv").config(); // ✅ important
 
 const mongoose = require("mongoose");
 const initData = require("./data.js");
 const Listing = require("../models/listing.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const dbUrl = process.env.ATLASDB_URL; // ✅ Atlas URL
+
+async function main() {
+  await mongoose.connect(dbUrl);
+}
 
 main()
   .then(() => {
-    console.log("Connected to DB");
+    console.log("Connected to Atlas DB");
   })
   .catch((err) => {
     console.log(err);
   });
 
-async function main() {
-  await mongoose.connect(MONGO_URL); 
-}
-
 const initDB = async () => {
-  await Listing.deleteMany({});  
-  initData.data=initData.data.map((obj) =>({...obj, owner: "697b755942d8e883c322594a"}));
-  await Listing.insertMany(initData.data);
-  console.log("Data was initialized");
+  await Listing.deleteMany({});
+
+  // ✅ Add owner field
+  const updatedData = initData.data.map((obj) => ({
+    ...obj,
+    owner: "697b755942d8e883c322594a",
+  }));
+
+  await Listing.insertMany(updatedData);
+
+  console.log("Data initialized in Atlas");
 };
 
 initDB();
